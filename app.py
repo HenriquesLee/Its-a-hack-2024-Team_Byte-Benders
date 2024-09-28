@@ -62,9 +62,7 @@ if user_name and purpose:
                                            "Daily Streaks", 
                                            "Set and View Goals", 
                                            "Get Motivation",
-                                           "Start Focus Mode",
-                                           "Study Planner",
-                                           "Manage Tasks"])
+                                           "Start Focus Mode"])
     
     if page_selection == "Generate AI Focus Plan":
         st.subheader("Generate AI Focus Plan")
