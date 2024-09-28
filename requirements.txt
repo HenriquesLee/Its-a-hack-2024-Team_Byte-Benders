@@ -1,0 +1,11 @@
+streamlit
+opencv-python
+keras
+tensorflow
+openai
+speechrecognition
+transformers
+googletrans==4.0.0-rc1
+psycopg2
+cryptography
+google-generativeai
