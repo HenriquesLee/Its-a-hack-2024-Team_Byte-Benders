@@ -17,5 +17,3 @@ def get_motivational_message(feeling):
     except Exception as e:
         return f"Error: {str(e)}"
 
-# Example usage
-print(get_motivational_message("tired and unmotivated"))
