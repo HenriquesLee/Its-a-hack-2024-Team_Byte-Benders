@@ -3,7 +3,7 @@ import sqlite3
 from ai_module import generate_focus_plan, ai_chat
 from streaks_module import get_streaks, update_streaks
 from user_goals import set_goals, view_goals
-from motivation_module import get_motivational_message
+from motivation_module import display_motivational_message  # Import the motivational display function
 from focus_mode import start_focus_session
 from study_planner import study_planner
 from task_manager import manage_tasks
@@ -41,6 +41,25 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS goals (
 
 conn.commit()
 
+# Set the background image using HTML and CSS
+background_image = """
+<style>
+[data-testid="stSidebarContent"] {
+    background-image: linear-gradient(to bottom right, #290e47, #341c5c);
+}
+[data-testid="stAppViewContainer"] > .main {
+    background-image: url("https://media1.tenor.com/m/HkBmWN8onyUAAAAC/bg.gif");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+[data-testid="stHeader"] {
+    background-color: rgba(0, 0, 0, 0);
+}
+</style>
+"""
+st.markdown(background_image, unsafe_allow_html=True)
+
 # App UI
 st.title("NeuroSync: AI-Driven Focus and Productivity Maximizer")
 
@@ -61,8 +80,10 @@ if user_name and purpose:
                                            "Chat with AI for Doubts", 
                                            "Daily Streaks", 
                                            "Set and View Goals", 
-                                           "Get Motivation",
-                                           "Start Focus Mode"])
+                                           "Get Motivation",  # Option to get motivation
+                                           "Start Focus Mode",
+                                           "Study Planner",
+                                           "Manage Tasks"])
     
     if page_selection == "Generate AI Focus Plan":
         st.subheader("Generate AI Focus Plan")
@@ -82,7 +103,6 @@ if user_name and purpose:
         streak_data = get_streaks(user_name)
         
         if streak_data:
-            # Print the streak count in bold using Markdown
             st.markdown(f"**Current Streak:** {streak_data['streak']} days")
             st.markdown(f"Last Update: {streak_data['last_update']}")
         else:
@@ -97,13 +117,9 @@ if user_name and purpose:
         set_goals(user_name)
         view_goals(user_name)
     
-    elif page_selection == "Get Motivation":
-        st.subheader("How do you feel?")
-        feeling = st.selectbox("Select your current feeling", ("Motivated", "Tired", "Anxious", "Excited"))
-        if st.button("Get Motivation"):
-            motivational_message = get_motivational_message(feeling)
-            st.write(f"Motivation: {motivational_message}")
-    
+    elif page_selection == "Get Motivation":  # Call the motivational message display function
+        display_motivational_message()  
+
     elif page_selection == "Start Focus Mode":
         start_focus_session()  # Starts focus mode
     
@@ -112,7 +128,6 @@ if user_name and purpose:
     
     elif page_selection == "Manage Tasks":
         manage_tasks()  # Task manager
-    
 
 else:
     st.warning("Please enter your name and select your purpose before proceeding.")
