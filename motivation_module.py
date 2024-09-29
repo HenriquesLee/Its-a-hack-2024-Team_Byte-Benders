@@ -5,12 +5,14 @@ import streamlit as st
 genai.configure(api_key="YOUR_API_KEY_HERE")
 model = genai.GenerativeModel('gemini-1.5-pro-001')
 
-# Function to generate a motivational message
+# Function to generate a motivational message in a conversational and warm tone
 def get_motivational_message(feeling):
-    prompt = f"I am feeling {feeling}. Please provide some motivational advice."
     try:
-        response = model.generate_content(prompt)
-        return response.candidates[0].content
+        with st.spinner('Crafting Your Motivation...'):
+            prompt = f"I am feeling {feeling}. Please provide some warm, motivational advice as if speaking directly to me."
+            response = model.generate_content(prompt)
+
+        return response.text
     except Exception as e:
         return f"Error: {str(e)}"
 
@@ -24,15 +26,14 @@ def display_motivational_message():
 
     if st.button("Get Motivation"):
         # Fetch the motivational message
-        with st.spinner('Fetching your motivational message...'):
-            message = get_motivational_message(feeling)
+        message = get_motivational_message(feeling)
 
         # Display the message in an overlay-like dialogue box
         if message:
             st.markdown(f"""
             <div style="background-color: rgba(30, 144, 255, 0.9); padding: 20px; border-radius: 10px; color: white; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);">
                 <h3>🧘‍♂️ Your Motivational Thought of the Day:</h3>
-                <p>{message}</p>
+                <p style="white-space: pre-line;">{message}</p>
             </div>
             """, unsafe_allow_html=True)
         else:
