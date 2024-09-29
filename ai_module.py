@@ -11,11 +11,9 @@ model = genai.GenerativeModel('gemini-1.5-pro-001')
 # Function to generate a personalized focus plan
 def generate_focus_plan(purpose):
     try:
-        # Use Streamlit spinner
         with st.spinner('Generating focus plan...'):
-            # Send a request to the Gemini API to generate a focus plan
-            prompt = f"Generate a personalized focus plan for {purpose}."
-            response = model.generate_content(prompt)
+          prompt = f"Generate a personalized focus plan for {purpose}."
+        response = model.generate_content(prompt)
 
         return response.text
     except Exception as e:
@@ -25,8 +23,9 @@ def generate_focus_plan(purpose):
 def ai_chat(user_question):
     try:
         with st.spinner('Thinking...'):
-            # Send the question to the Gemini API
-            response = model.generate_content(user_question)
+
+        # Send the question to the Gemini API
+          response = model.generate_content(user_question)
         return response.text
     except Exception as e:
         return f"Error: {str(e)}"
@@ -35,19 +34,21 @@ def ai_chat(user_question):
 def generate_study_plan(exam_type, num_weeks):
     prompt = f"Create a personalized study plan for {exam_type} preparation over {num_weeks} weeks."
     try:
-        with st.spinner('Creating study plan...'):
-            response = model.generate_content(prompt)
+        with st.spinner('Generating study plan...'):
+          response = model.generate_content(prompt)
         return response.text  # Return the AI-generated study plan
     except Exception as e:
         return f"Error: {str(e)}"
+
 
 # AI function for prioritizing tasks
 def prioritize_tasks(tasks):
     prompt = "Prioritize the following tasks based on their urgency and importance:\n" + "\n".join(tasks)
     try:
-        with st.spinner('Prioritizing tasks...'):
-            # Send the prompt to the Gemini API
-            response = model.generate_content(prompt)
+        with st.spinner('Prioritizing task...'):
+
+        # Send the prompt to the Gemini API
+          response = model.generate_content(prompt)
         return response.text  # Return the AI-generated prioritized tasks
     except Exception as e:
         return f"Error: {str(e)}"
