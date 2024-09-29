@@ -9,8 +9,9 @@ def manage_tasks():
     
     if priority_button:
         tasks = task_list.split("\n")
-        if tasks:  # Check if there are any tasks entered
-            prioritized_tasks = prioritize_tasks(tasks)  # Call the AI function
+        if tasks:
+            with st.spinner('Prioritizing your task...'):# Check if there are any tasks entered
+                prioritized_tasks = prioritize_tasks(tasks)  # Call the AI function
             st.write("Your prioritized tasks are:")
             st.write(prioritized_tasks)
         else:

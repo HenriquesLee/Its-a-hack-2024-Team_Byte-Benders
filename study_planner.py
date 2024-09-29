@@ -13,7 +13,8 @@ def study_planner():
     
     if generate_button:
         # Call the AI function to generate the study plan
-        study_plan = generate_study_plan(exam_type, num_weeks)
+        with st.spinner('Cooking your study plan...'):
+            study_plan = generate_study_plan(exam_type, num_weeks)
 
         # Debugging: Print the raw output
         st.write("Raw output from AI:", study_plan)

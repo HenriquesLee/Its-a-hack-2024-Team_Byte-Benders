@@ -24,7 +24,8 @@ def display_motivational_message():
 
     if st.button("Get Motivation"):
         # Fetch the motivational message
-        message = get_motivational_message(feeling)
+        with st.spinner('Fetching your motivational message...'):
+            message = get_motivational_message(feeling)
 
         # Display the message in an overlay-like dialogue box
         if message:
