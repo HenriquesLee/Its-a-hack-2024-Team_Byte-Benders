@@ -14,7 +14,7 @@ def get_streaks(user_name):
     conn.close()
     return None
 
-def update_streaks_auto(user_name):
+def update_streaks(user_name):
     conn = sqlite3.connect('neurosync.db')
     cursor = conn.cursor()
     user_id = cursor.execute("SELECT id FROM users WHERE name=?", (user_name,)).fetchone()

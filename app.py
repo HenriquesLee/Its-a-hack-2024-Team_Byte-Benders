@@ -100,6 +100,10 @@ if user_name and purpose:
     
     elif page_selection == "Daily Streaks":
         st.subheader("Daily Streaks")
+        
+        # Automatically update streaks when user visits this page
+        update_streaks(user_name)
+        
         streak_data = get_streaks(user_name)
         
         if streak_data:
@@ -107,10 +111,6 @@ if user_name and purpose:
             st.markdown(f"Last Update: {streak_data['last_update']}")
         else:
             st.write("No streaks found. Start your streak today!")
-        
-        if st.button("Update Streak"):
-            update_streaks(user_name)
-            st.success("Streak updated!")
         
     elif page_selection == "Set and View Goals":
         st.subheader("Set and View Goals")
