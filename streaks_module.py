@@ -14,7 +14,7 @@ def get_streaks(user_name):
     conn.close()
     return None
 
-def update_streaks(user_name):
+def update_streaks_auto(user_name):
     conn = sqlite3.connect('neurosync.db')
     cursor = conn.cursor()
     user_id = cursor.execute("SELECT id FROM users WHERE name=?", (user_name,)).fetchone()
@@ -29,14 +29,16 @@ def update_streaks(user_name):
         else:
             last_update_date = None
 
-        # Only update streak if the last_update date is different from today
-        if last_update_date is None or last_update_date < today:
-            if last_update_date is None:
-                # First entry for the user
-                cursor.execute("INSERT INTO streaks (user_id, streak, last_update) VALUES (?, ?, ?)", (user_id[0], 1, today))
-            else:
-                # Increment streak and update last_update
-                cursor.execute("UPDATE streaks SET streak = streak + 1, last_update = ? WHERE user_id = ?", (today, user_id[0]))
+        # Only update streak if the last_update date is different from today and more than 24 hours have passed
+        if last_update_date is None:
+            # First entry for the user
+            cursor.execute("INSERT INTO streaks (user_id, streak, last_update) VALUES (?, ?, ?)", (user_id[0], 1, today))
+        elif (today - last_update_date).days == 1:
+            # Increment streak and update last_update if a full day has passed
+            cursor.execute("UPDATE streaks SET streak = streak + 1, last_update = ? WHERE user_id = ?", (today, user_id[0]))
+        elif (today - last_update_date).days > 1:
+            # Reset streak if the user has missed more than a day
+            cursor.execute("UPDATE streaks SET streak = 1, last_update = ? WHERE user_id = ?", (today, user_id[0]))
         
         # Commit changes to the database
         conn.commit()
