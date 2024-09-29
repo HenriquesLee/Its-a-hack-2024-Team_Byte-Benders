@@ -3,11 +3,12 @@ import sqlite3
 from ai_module import generate_focus_plan, ai_chat
 from streaks_module import get_streaks, update_streaks
 from user_goals import set_goals, view_goals
-from motivation_module import display_motivational_message  # Import the motivational display function
+from motivation_module import display_motivational_message
 from focus_mode import start_focus_session
 from study_planner import study_planner
 from task_manager import manage_tasks
 from analytics import show_analytics
+from study_buddy_module import display_study_buddy
 
 # Initialize SQLite3 connection
 conn = sqlite3.connect('neurosync.db')
@@ -80,14 +81,16 @@ if user_name and purpose:
                                            "Chat with AI for Doubts", 
                                            "Daily Streaks", 
                                            "Set and View Goals", 
-                                           "Get Motivation",  # Option to get motivation
+                                           "Get Motivation",  
                                            "Start Focus Mode",
                                            "Study Planner",
-                                           "Manage Tasks"])
-    
+                                           "Manage Tasks",
+                                           "Study Buddy"])  
+
     if page_selection == "Generate AI Focus Plan":
         st.subheader("Generate AI Focus Plan")
         if st.button("Generate Focus Plan"):
+
             focus_plan = generate_focus_plan(purpose)
             st.write(f"AI Focus Plan: {focus_plan}")
     
@@ -101,7 +104,6 @@ if user_name and purpose:
     elif page_selection == "Daily Streaks":
         st.subheader("Daily Streaks")
         
-        # Automatically update streaks when user visits this page
         update_streaks(user_name)
         
         streak_data = get_streaks(user_name)
@@ -117,17 +119,20 @@ if user_name and purpose:
         set_goals(user_name)
         view_goals(user_name)
     
-    elif page_selection == "Get Motivation":  # Call the motivational message display function
-        display_motivational_message()  
+    elif page_selection == "Get Motivation":
+        display_motivational_message()
 
     elif page_selection == "Start Focus Mode":
-        start_focus_session()  # Starts focus mode
+        start_focus_session()
     
     elif page_selection == "Study Planner":
-        study_planner()  # Starts study planner session
+        study_planner()
     
     elif page_selection == "Manage Tasks":
-        manage_tasks()  # Task manager
+        manage_tasks()
+    
+    elif page_selection == "Study Buddy":
+        display_study_buddy()
 
 else:
     st.warning("Please enter your name and select your purpose before proceeding.")
